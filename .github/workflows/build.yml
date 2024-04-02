@@ -3,37 +3,15 @@ name: x86_64 and i686 release builds
 on: push
 
 jobs:
-  split-tag:
-    runs-on: ubuntu-latest
-    outputs:
-      gcc-version: ${{ steps.get-gcc-version.outputs.version }}
-      rt-version: ${{ steps.get-rt-version.outputs.version }}
-      mingw-rev: ${{ steps.get-mingw-revision.outputs.rev }}
-    steps:
-      - id: get-gcc-version
-        run: echo "version=$(echo ${{ github.ref_name }} | cut -d- -f1)" >> $GITHUB_OUTPUT
-      - id: get-rt-version
-        run: echo "version=$(echo ${{ github.ref_name }} | cut -d- -f2 | cut -c4-)" >> $GITHUB_OUTPUT
-      - id: get-mingw-revision
-        run: echo "rev=$(echo ${{ github.ref_name }} | cut -d- -f3 | cut -c4-)" >> $GITHUB_OUTPUT
-
   build:
-    needs: split-tag
     runs-on: windows-2019
     strategy:
       fail-fast: false
       matrix:
         arch: [x86_64]
-        threads: [posix, win32, mcf]
-        exceptions: [seh, dwarf]
-        msvcrt: [msvcrt, ucrt]
-        exclude:
-          - arch: x86_64
-            exceptions: dwarf
-          - arch: i686
-            exceptions: seh
-          - threads: mcf
-            msvcrt: msvcrt
+        threads: [posix]
+        exceptions: [seh]
+        msvcrt: [msvcrt]
 
     steps:
     - uses: actions/checkout@v2
@@ -51,10 +29,10 @@ jobs:
         ./build
         --mode=gcc-13.2.0
         --buildroot=/c/buildroot
-        --jobs=4
+        --jobs=8
         --rev=0
         --with-default-msvcrt=${{ matrix.msvcrt }}
-        --rt-version=11
+        --rt-version=v11
         --threads=${{ matrix.threads }}
         --exceptions=${{ matrix.exceptions }}
         --arch=${{ matrix.arch }}
