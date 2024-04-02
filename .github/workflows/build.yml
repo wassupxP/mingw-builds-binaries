@@ -1,9 +1,6 @@
 name: x86_64 and i686 release builds
 
-on:
-  push:
-    tags:
-      - "*-rt_*-rev*"
+on: push
 
 jobs:
   split-tag:
@@ -61,8 +58,9 @@ jobs:
         --threads=${{ matrix.threads }}
         --exceptions=${{ matrix.exceptions }}
         --arch=${{ matrix.arch }}
+        --static-gcc
         --bin-compress
-        --enable-languages=c,c++,fortran
+        --enable-languages=c,c++
 
     - name: Upload
       uses: actions/upload-artifact@v3
