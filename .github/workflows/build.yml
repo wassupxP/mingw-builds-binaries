@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64, i686]
+        arch: [x86_64]
         threads: [posix, win32, mcf]
         exceptions: [seh, dwarf]
         msvcrt: [msvcrt, ucrt]
@@ -49,12 +49,12 @@ jobs:
       shell: msys2 {0}
       run: >-
         ./build
-        --mode=gcc-${{ needs.split-tag.outputs.gcc-version }}
+        --mode=gcc-13.2.0
         --buildroot=/c/buildroot
         --jobs=4
-        --rev=${{ needs.split-tag.outputs.mingw-rev }}
+        --rev=0
         --with-default-msvcrt=${{ matrix.msvcrt }}
-        --rt-version=${{ needs.split-tag.outputs.rt-version }}
+        --rt-version=11
         --threads=${{ matrix.threads }}
         --exceptions=${{ matrix.exceptions }}
         --arch=${{ matrix.arch }}
