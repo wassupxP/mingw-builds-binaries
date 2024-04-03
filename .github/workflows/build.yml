@@ -1,17 +1,10 @@
-name: x86_64 and i686 release builds
+name: x86_64 build
 
 on: push
 
 jobs:
   build:
     runs-on: windows-2019
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x86_64]
-        threads: [posix]
-        exceptions: [seh]
-        msvcrt: [msvcrt]
 
     steps:
     - uses: actions/checkout@v2
@@ -31,12 +24,13 @@ jobs:
         --buildroot=/c/buildroot
         --jobs=8
         --rev=0
-        --with-default-msvcrt=${{ matrix.msvcrt }}
+        --with-default-msvcrt=msvcrt
         --rt-version=v11
-        --threads=${{ matrix.threads }}
-        --exceptions=${{ matrix.exceptions }}
-        --arch=${{ matrix.arch }}
+        --threads=posix
+        --exceptions=seh
+        --arch=x86_64
         --static-gcc
+        --no-extras
         --bin-compress
         --enable-languages=c,c++
 
