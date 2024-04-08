@@ -30,6 +30,7 @@ jobs:
         --arch=x86_64
         --static-gcc
         --no-extras
+        --bootstrapall
         --enable-languages=c,c++
 
     - name: Upload
