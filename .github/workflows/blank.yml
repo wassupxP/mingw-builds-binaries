@@ -1,0 +1,56 @@
+name: x86_64 build
+
+on: push
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: 'niXman/mingw-builds'
+        ref: 'develop'
+
+    - uses: msys2/setup-msys2@v2
+      with:
+        update: true
+
+    - name: Build
+      shell: msys2 {0}
+      run: >-
+        ./build
+        --mode=gcc-13.2.0
+        --buildroot=/c/buildroot
+        --jobs=8
+        --rev=0
+        --rt-version=v11
+        --threads=posix
+        --exceptions=seh
+        --arch=x86_64
+        --static-gcc
+        --no-extras
+        --enable-languages=c,c++
+
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: 'archives'
+        path: c:/buildroot/archives/
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: 'archives'
+        path: ./
+
+    - name: Upload to Release
+      id: upload_to_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: "*.7z"
