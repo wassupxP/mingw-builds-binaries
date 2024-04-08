@@ -24,15 +24,12 @@ jobs:
         --buildroot=/c/buildroot
         --jobs=8
         --rev=0
-        --with-default-msvcrt=msvcrt
         --rt-version=v11
         --threads=posix
         --exceptions=seh
         --arch=x86_64
         --static-gcc
         --no-extras
-        --ldflags=-static
-        --bin-compress
         --enable-languages=c,c++
 
     - name: Upload
