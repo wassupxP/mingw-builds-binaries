@@ -35,11 +35,11 @@ jobs:
 
     - name: List C:/buildtools contents
       shell: msys2 {0}
-      run: ls -la /c/buildtools
+      run: ls -la /c/buildroot/
 
     - name: Upload build tools as artifact
       uses: actions/upload-artifact@v3
       with:
-        name: build-tools
-        path: c:/buildtools/
+        name: buildroot
+        path: c:/buildroot/
 
