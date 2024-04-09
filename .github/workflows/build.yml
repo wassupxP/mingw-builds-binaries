@@ -30,27 +30,15 @@ jobs:
         --arch=x86_64
         --static-gcc
         --no-extras
+        --bootstrapall
         --enable-languages=c,c++
 
-    - name: Upload
+    - name: List C:/buildtools contents
+      shell: msys2 {0}
+      run: ls -la /c/buildroot/
+
+    - name: Upload build tools as artifact
       uses: actions/upload-artifact@v3
       with:
-        name: 'archives'
-        path: c:/buildroot/archives/
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: 'archives'
-        path: ./
-
-    - name: Upload to Release
-      id: upload_to_release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: "*.7z"
+        name: buildroot
+        path: c:/buildroot/
