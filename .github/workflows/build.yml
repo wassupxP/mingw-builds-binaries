@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: buildroot
-        path: c:/buildroot/
+        path: c:/buildroot/archives
