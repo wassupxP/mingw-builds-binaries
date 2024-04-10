@@ -22,7 +22,7 @@ jobs:
         ./build
         --mode=gcc-13.2.0
         --buildroot=/c/buildroot
-        --jobs=8
+        --jobs=4
         --rev=0
         --rt-version=v11
         --threads=posix
@@ -30,15 +30,14 @@ jobs:
         --arch=x86_64
         --static-gcc
         --no-extras
-        --bootstrapall
         --enable-languages=c,c++
 
     - name: List C:/buildtools contents
       shell: msys2 {0}
       run: ls -la /c/buildroot/
 
-    - name: Upload build tools as artifact
+    - name: Upload
       uses: actions/upload-artifact@v3
       with:
-        name: buildroot
-        path: c:/buildroot/archives
+        name: 'archives'
+        path: c:/buildroot/archives/
